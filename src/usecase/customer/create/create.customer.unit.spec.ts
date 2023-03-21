@@ -37,5 +37,4 @@ describe("Unit test create customer use case", () => {
       },
     });
   });
-  });
 });
