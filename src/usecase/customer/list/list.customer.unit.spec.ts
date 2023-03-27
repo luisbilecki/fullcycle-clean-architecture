@@ -1,5 +1,3 @@
-
-
 import CustomerFactory from "../../../domain/customer/factory/customer.factory";
 import Address from "../../../domain/customer/value-object/address";
 import ListCustomerUseCase from "./list.customer.usecase";
@@ -27,7 +25,7 @@ describe("Unit test for listing customer use case", () => {
     const repository = MockRepository();
     const useCase = new ListCustomerUseCase(repository);
 
-    const output = await useCase.execute({});
+    const output = await useCase.execute();
 
     expect(output.customers.length).toBe(2);
     expect(output.customers[0].id).toBe(customer1.id);
