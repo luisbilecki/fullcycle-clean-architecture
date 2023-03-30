@@ -6,7 +6,7 @@ import { customerRoute } from "./routes/customer.route";
 export const app: Express = express();
 
 app.use(express.json());
-app.use("/customers", customerRoute);
+app.use("/customer", customerRoute);
 
 export let sequelize: Sequelize;
 
