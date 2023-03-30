@@ -57,17 +57,22 @@ describe("E2E test for customer", () => {
 
     expect(listResponse.status).toBe(200);
     expect(listResponse.body.customers.length).toBe(2);
-    const firstCustomer = listResponse.body.customer[0];
-    const secondCustomer = listResponse.body.customer[1];
-    expect(firstCustomer).toBe(customers[0]);
-    expect(secondCustomer).toBe(customers[1]);
+    const firstCustomer = listResponse.body.customers[0];
+    const secondCustomer = listResponse.body.customers[1];
+    expect(firstCustomer.name).toBe(customers[0].name);
+    expect(firstCustomer.address.street).toBe(customers[0].address.street);
+    expect(secondCustomer.name).toBe(customers[1].name);
+    expect(secondCustomer.address.street).toBe(customers[1].address.street);
   });
 });
 
-const assertCustomerCreated = async (data) => {
+const assertCustomerCreated = async (data: any) => {
   const response = await request(app).post("/customer").send(data);
 
   expect(response.status).toBe(200);
   expect(response.body.name).toBe(data.name);
-  expect(response.body.address).toBe(data.address);
+  expect(response.body.address.street).toBe(data.address.street);
+  expect(response.body.address.city).toBe(data.address.city);
+  expect(response.body.address.number).toBe(data.address.number);
+  expect(response.body.address.zip).toBe(data.address.zip);
 };
