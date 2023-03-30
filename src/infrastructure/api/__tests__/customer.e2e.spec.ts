@@ -11,24 +11,15 @@ describe("E2E test for customer", () => {
   });
 
   it("should create a customer", async () => {
-    const response = await request(app)
-      .post("/customer")
-      .send({
-        name: "Luis",
-        address: {
-          street: "Street name",
-          city: "city",
-          number: 123,
-          zip: "12345",
-        },
-      });
-
-    expect(response.status).toBe(200);
-    expect(response.body.name).toBe("Luis");
-    expect(response.body.address.street).toBe("Street name");
-    expect(response.body.address.city).toBe("city");
-    expect(response.body.address.number).toBe(123);
-    expect(response.body.address.zip).toBe("12345");
+    assertCustomerCreated({
+      name: "Luis",
+      address: {
+        street: "Street name",
+        city: "city",
+        number: 123,
+        zip: "12345",
+      },
+    });
   });
 
   it("should not create a customer", async () => {
@@ -38,4 +29,45 @@ describe("E2E test for customer", () => {
 
     expect(response.status).toBe(500);
   });
+
+  it("should list all customer", async () => {
+    const customers = [
+      {
+        name: "Luis",
+        address: {
+          street: "Street name",
+          city: "city",
+          number: 123,
+          zip: "12345",
+        },
+      },
+      {
+        name: "Jane",
+        address: {
+          street: "Street name",
+          city: "City 2",
+          number: 456,
+          zip: "12345",
+        },
+      },
+    ];
+    customers.forEach((customer) => assertCustomerCreated(customer));
+
+    const listResponse = await request(app).get("/customer").send();
+
+    expect(listResponse.status).toBe(200);
+    expect(listResponse.body.customers.length).toBe(2);
+    const firstCustomer = listResponse.body.customer[0];
+    const secondCustomer = listResponse.body.customer[1];
+    expect(firstCustomer).toBe(customers[0]);
+    expect(secondCustomer).toBe(customers[1]);
+  });
 });
+
+const assertCustomerCreated = async (data) => {
+  const response = await request(app).post("/customer").send(data);
+
+  expect(response.status).toBe(200);
+  expect(response.body.name).toBe(data.name);
+  expect(response.body.address).toBe(data.address);
+};
