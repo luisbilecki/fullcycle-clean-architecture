@@ -11,7 +11,7 @@ describe("E2E test for customer", () => {
   });
 
   it("should create a customer", async () => {
-    assertCustomerCreated({
+    await assertCustomerCreated({
       name: "Luis",
       address: {
         street: "Street name",
@@ -23,10 +23,7 @@ describe("E2E test for customer", () => {
   });
 
   it("should not create a customer", async () => {
-    const response = await request(app).post("/customer").send({
-      name: "Luis",
-    });
-
+    const response = await request(app).post("/customer").send({});
     expect(response.status).toBe(500);
   });
 
